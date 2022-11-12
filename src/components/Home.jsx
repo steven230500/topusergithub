@@ -2,64 +2,66 @@ import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
   View,
+  Text,
+  TouchableOpacity,
+  FlatList,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-
-const Home = () => {
-
-  const backgroundStyle = {
-    backgroundColor: Colors.lighter,
-  };
-
-  const accounts = ["GrahamCampbell","fabpot","weierophinney","rkh","josh"]
+const Home = ({navigation}) => {
+  const accounts = [
+    {name: 'GrahamCampbell', id: 1},
+    {name: 'fabpot', id: 2},
+    {name: 'weierophinney', id: 3},
+    {name: 'rkh', id: 4},
+    {name: 'josh', id: 5},
+  ];
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-     
-      <ScrollView
+    <SafeAreaView>
+      <View
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: Colors.black,
-          }}>
-          <LearnMoreLinks />
+        style={styles.scroll}>
+        <View>
+          <Text style={styles.title}>Top 5 GitHub Users</Text>
+          <Text style={styles.subTitle}>
+            Tap the username to see more information
+          </Text>
         </View>
-      </ScrollView>
+        <FlatList
+          data={accounts}
+          keyExtractor={a => a.id}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+            onPress={() => navigation.navigate('Person', {
+                user: item.name
+              })}
+              style={{margin: 10, backgroundColor: '#c5c5c5', padding: 10}}>
+              <Text>
+                <Text>User#{item.id} </Text>
+                <Text>{item.name}</Text>
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  scroll: {
+    paddingHorizontal: 15,
+    paddingVertical: 25,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
-  sectionDescription: {
-    marginTop: 8,
+  subTitle: {
     fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+    marginVertical: 10,
   },
 });
 
